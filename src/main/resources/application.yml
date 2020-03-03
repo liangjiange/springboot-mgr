@@ -1,0 +1,44 @@
+server:
+  port: 9000
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,application/javascript,text/html,text/css,text/xml,text/plain
+
+spring:
+  profiles:
+    active: dev
+  data:
+    redis:
+      repositories:
+        enabled: false
+  messages: i18n/messages
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 5 #\u521D\u59CB\u5316\u5927\u5C0F
+      min-idle: 5 #\u6700\u5C0F\u8FDE\u63A5\u6570
+      max-active: 20 #\u6700\u5927\u8FDE\u63A5\u6570
+      max-wait: 60000 #\u83B7\u53D6\u8FDE\u63A5\u7B49\u5F85\u8D85\u65F6\u65F6\u95F4
+      time-between-eviction-runs-millis: 60000 #\u95F4\u9694\u591A\u4E45\u624D\u8FDB\u884C\u4E00\u6B21\u68C0\u6D4B\uFF0C\u68C0\u6D4B\u9700\u8981\u5173\u95ED\u7684\u7A7A\u95F2\u8FDE\u63A5\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+      min-evictable-idle-time-millis: 30000 #\u6307\u5B9A\u4E00\u4E2A\u7A7A\u95F2\u8FDE\u63A5\u6700\u5C11\u7A7A\u95F2\u591A\u4E45\u540E\u53EF\u88AB\u6E05\u9664\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+      validation-query: select 'x'
+      test-while-idle: true #\u5F53\u8FDE\u63A5\u7A7A\u95F2\u65F6\uFF0C\u662F\u5426\u6267\u884C\u8FDE\u63A5\u6D4B\u8BD5
+      test-on-borrow: false #\u5F53\u4ECE\u8FDE\u63A5\u6C60\u501F\u7528\u8FDE\u63A5\u65F6\uFF0C\u662F\u5426\u6D4B\u8BD5\u8BE5\u8FDE\u63A5
+      test-on-return: false #\u5728\u8FDE\u63A5\u5F52\u8FD8\u5230\u8FDE\u63A5\u6C60\u65F6\u662F\u5426\u6D4B\u8BD5\u8BE5\u8FDE\u63A5
+      filters: stat,wall,slf4j,config #\u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762SQL\u65E0\u6CD5\u8FDB\u884C\u7EDF\u8BA1\uFF0C\u2019wall\u2019\u7528\u4E8E\u9632\u706B\u5899
+      pool-prepared-statements: true #\u6253\u5F00PSCache\uFF0C\u5E76\u4E14\u6307\u5B9A\u6BCF\u4E2A\u8FDE\u63A5\u4E0APSCache\u7684\u5927\u5C0F
+      max-pool-prepared-statement-per-connection-size: 20
+      max-open-prepared-statements: 20
+      #\u901A\u8FC7connectProperties\u5C5E\u6027\u6765\u6253\u5F00mergeSql\u529F\u80FD\uFF1B\u6162SQL\u8BB0\u5F55
+      connection-properties: druid.stat.slowSqlMillis=200;druid.stat.logSlowSql=true;config.decrypt=false
+      #WebStatFilter\u914D\u7F6E\uFF0C\u8BF4\u660E\u8BF7\u53C2\u8003Druid Wiki\uFF0C\u914D\u7F6E_\u914D\u7F6EWebStatFilter
+      web-stat-filter:
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        session-stat-max-count: 10
